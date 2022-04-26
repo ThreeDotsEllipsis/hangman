@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -14,12 +15,21 @@ class Hangman extends StatefulWidget {
 
 class _HangmanState extends State<Hangman> {
 
-  List<String> words = ["dancer", "mouse", "button", "jazz", "cat"];
-  List<String> missedChars = ['s', 'e'];
+  final List<String> words = ["dancer", "mouse", "button", "jazz", "cat"];
+
+  String? secretWord;
+  List<String> missedChars = [];
 
   String pickRandomWord() {
     words.shuffle();
-    return words[0];
+    secretWord = words[0];
+    return secretWord!;
+  }
+
+  void submitChar(char) {
+    setState(() {
+      missedChars.add(char);
+    });
   }
 
   @override
@@ -53,6 +63,15 @@ class _HangmanState extends State<Hangman> {
                 ),
               ),
             )).toList(),
+          ),
+          SizedBox(height: 24),
+          TextField(
+            onSubmitted: submitChar,
+            textAlign: TextAlign.center,
+            maxLength: 1,
+            style: TextStyle(
+              fontSize: 28,
+            ),
           ),
         ],
       ),
