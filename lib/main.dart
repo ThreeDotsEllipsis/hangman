@@ -20,34 +20,47 @@ class _HangmanState extends State<Hangman> {
 
   int mistakes = 0;
   int maxMistakes = 6;
-  String? secretWord;
+  String secretWord = "";
+  String guessedWord = "";
   List<String> missedChars = [];
 
-  void submitChar(char) {
-    if(false) {
-
-    }
-    else if(!missedChars.contains(char)) {
+  void submitChar(String char) {
+    try {
       setState(() {
-        mistakes += 1;
-        missedChars.add(char);
+        if(char == "") {
+          return;
+        }
+
         submitField.clear();
 
-        if(mistakes > maxMistakes) {
-          mistakes = 0;
-          missedChars = [];
-          pickRandomWord();
+        if(secretWord.contains(char)) {
+          int index = secretWord.indexOf(char);
+          guessedWord = guessedWord.substring(0, index) + char + guessedWord.substring(index+1);
+        }
+        else if(!missedChars.contains(char)) {
+            mistakes += 1;
+            missedChars.add(char);
+
+            if(mistakes > maxMistakes) {
+              mistakes = 0;
+              missedChars = [];
+              pickRandomWord();
+            }
         }
       });
     }
-    else {
-      submitField.clear();
+    on PlatformException catch (err) {
+      print(err);
     }
   }
 
   void pickRandomWord() {
     words.shuffle();
     secretWord = words[0];
+    guessedWord = "";
+    secretWord.split('').forEach((element) {
+      guessedWord += "-";
+    });
   }
 
   @override
@@ -79,8 +92,9 @@ class _HangmanState extends State<Hangman> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Row(
-                children: secretWord!.split('').map((char) => Container(
-                  padding: EdgeInsets.all(16), 
+                children: guessedWord.split('').map((char) => Container(
+                  padding: EdgeInsets.all(16),
+                  child: Text(char),
                   decoration: BoxDecoration(
                     border: Border.all()
                   ),
