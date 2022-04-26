@@ -14,7 +14,6 @@ class Hangman extends StatefulWidget {
 }
 
 class _HangmanState extends State<Hangman> {
-
   final List<String> words = ["dancer", "mouse", "button", "jazz", "cat"];
   final submitField = TextEditingController();
 
@@ -34,8 +33,17 @@ class _HangmanState extends State<Hangman> {
         submitField.clear();
 
         if(secretWord.contains(char)) {
-          int index = secretWord.indexOf(char);
-          guessedWord = guessedWord.substring(0, index) + char + guessedWord.substring(index+1);
+          for(int i = 0; i < secretWord.length; i++) {
+            if(secretWord[i] == char) {
+              guessedWord = guessedWord.substring(0, i) + char + guessedWord.substring(i+1);
+            }
+          }
+
+          if(guessedWord == secretWord) {
+            mistakes = 0;
+            missedChars = [];
+            pickRandomWord();
+          }
         }
         else if(!missedChars.contains(char)) {
             mistakes += 1;
@@ -49,9 +57,8 @@ class _HangmanState extends State<Hangman> {
         }
       });
     }
-    on PlatformException catch (err) {
-      print(err);
-    }
+    // Makes it work somehow i guess ¯\_(ツ)_/¯
+    on PlatformException catch (err) {}
   }
 
   void pickRandomWord() {
