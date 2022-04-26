@@ -15,6 +15,7 @@ class Hangman extends StatefulWidget {
 class _HangmanState extends State<Hangman> {
 
   List<String> words = ["dancer", "mouse", "button", "jazz", "cat"];
+  List<String> missedChars = ['s', 'e'];
 
   String pickRandomWord() {
     words.shuffle();
@@ -34,9 +35,22 @@ class _HangmanState extends State<Hangman> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: pickRandomWord().split('').map((char) => Container(
-              padding: EdgeInsets.all(16), 
+              padding: EdgeInsets.all(24), 
               decoration: BoxDecoration(
                 border: Border.all()
+              ),
+            )).toList(),
+          ),
+          SizedBox(height: 16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: missedChars.map((char) => Container(
+              padding: EdgeInsets.all(8),
+              child: Text(
+                char,
+                style: TextStyle(
+                  fontSize: 28,
+                ),
               ),
             )).toList(),
           ),
