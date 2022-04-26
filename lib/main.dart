@@ -32,6 +32,12 @@ class _HangmanState extends State<Hangman> {
         mistakes += 1;
         missedChars.add(char);
         submitField.clear();
+
+        if(mistakes > maxMistakes) {
+          mistakes = 0;
+          missedChars = [];
+          pickRandomWord();
+        }
       });
     }
     else {
@@ -39,10 +45,14 @@ class _HangmanState extends State<Hangman> {
     }
   }
 
-  @override
-  void initState() {
+  void pickRandomWord() {
     words.shuffle();
     secretWord = words[0];
+  }
+
+  @override
+  void initState() {
+    pickRandomWord();
   }
 
   @override
@@ -77,6 +87,8 @@ class _HangmanState extends State<Hangman> {
                 )).toList(),
               ),
               SizedBox(width: 16),
+              Icon(Icons.error),
+              SizedBox(width: 4),
               Text(
                 "${mistakes} / ${maxMistakes}",
                 style: TextStyle(
