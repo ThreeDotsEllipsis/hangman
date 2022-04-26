@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:english_words/english_words.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -14,7 +17,6 @@ class Hangman extends StatefulWidget {
 }
 
 class _HangmanState extends State<Hangman> {
-  final List<String> words = ["dancer", "mouse", "button", "jazz", "cat"];
   final submitField = TextEditingController();
 
   int mistakes = 0;
@@ -62,8 +64,8 @@ class _HangmanState extends State<Hangman> {
   }
 
   void pickRandomWord() {
-    words.shuffle();
-    secretWord = words[0];
+    int index = Random().nextInt(nouns.length);
+    secretWord = nouns[index];
     guessedWord = "";
     secretWord.split('').forEach((element) {
       guessedWord += "-";
@@ -126,6 +128,7 @@ class _HangmanState extends State<Hangman> {
                 char,
                 style: TextStyle(
                   fontSize: 22,
+                  decoration: TextDecoration.lineThrough,
                 ),
               ),
             )).toList(),
