@@ -25,6 +25,14 @@ class _HangmanState extends State<Hangman> {
   String guessedWord = "";
   List<String> missedChars = [];
 
+  void playAgain() {
+    setState(() {
+      mistakes = 0;
+      missedChars = [];
+      pickRandomWord();
+    });
+  }
+
   void submitChar(String char) {
     try {
       setState(() {
@@ -40,21 +48,13 @@ class _HangmanState extends State<Hangman> {
               guessedWord = guessedWord.substring(0, i) + char + guessedWord.substring(i+1);
             }
           }
-
-          if(guessedWord == secretWord) {
-            mistakes = 0;
-            missedChars = [];
-            pickRandomWord();
-          }
         }
         else if(!missedChars.contains(char)) {
             mistakes += 1;
             missedChars.add(char);
 
-            if(mistakes > maxMistakes) {
-              mistakes = 0;
-              missedChars = [];
-              pickRandomWord();
+            if(mistakes >= maxMistakes) {
+              guessedWord = secretWord;
             }
         }
       });
@@ -132,6 +132,11 @@ class _HangmanState extends State<Hangman> {
                 ),
               ),
             )).toList(),
+          ),
+          SizedBox(height: 16),
+          ElevatedButton(
+            onPressed: playAgain, 
+            child: Text("Continue"),
           ),
         ],
       ),
