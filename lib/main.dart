@@ -1,8 +1,8 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:english_words/english_words.dart';
+import 'package:sizer/sizer.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -99,26 +99,18 @@ class _HangmanState extends State<Hangman> {
           SizedBox(height: 16),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Row(
-                children: guessedWord.split('').map((char) => Container(
-                  padding: EdgeInsets.all(16),
-                  child: Text(char),
-                  decoration: BoxDecoration(
-                    border: Border.all()
-                  ),
-                )).toList(),
-              ),
-              SizedBox(width: 16),
-              Icon(Icons.error),
-              SizedBox(width: 4),
-              Text(
-                "${mistakes} / ${maxMistakes}",
+            children: guessedWord.split('').map((char) => Container(
+              padding: EdgeInsets.all(12),
+              child: Text(
+                char,
                 style: TextStyle(
-                  fontSize: 24,
+                  fontSize: 20,
                 ),
               ),
-            ],
+              decoration: BoxDecoration(
+                border: Border.all()
+              ),
+            )).toList(),
           ),
           SizedBox(height: 16),
           Wrap(
@@ -134,9 +126,23 @@ class _HangmanState extends State<Hangman> {
             )).toList(),
           ),
           SizedBox(height: 16),
-          ElevatedButton(
-            onPressed: playAgain, 
-            child: Text("Continue"),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                onPressed: playAgain, 
+                child: Text("Continue"),
+              ),
+              SizedBox(width: 32),
+              Icon(Icons.error),
+              SizedBox(width: 4),
+              Text(
+                "${mistakes} / ${maxMistakes}",
+                style: TextStyle(
+                  fontSize: 24,
+                ),
+              ),
+            ],
           ),
         ],
       ),
