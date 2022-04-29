@@ -19,6 +19,9 @@ class Hangman extends StatefulWidget {
 class _HangmanState extends State<Hangman> {
   final submitField = TextEditingController();
 
+  bool gameEnded = false;
+  bool lost = false;
+
   int mistakes = 0;
   int maxMistakes = 6;
   String secretWord = "";
@@ -48,6 +51,11 @@ class _HangmanState extends State<Hangman> {
               guessedWord = guessedWord.substring(0, i) + char + guessedWord.substring(i+1);
             }
           }
+
+          if(secretWord == guessedWord) {
+            gameEnded = true;
+            lost = false;
+          }
         }
         else if(!missedChars.contains(char)) {
             mistakes += 1;
@@ -55,6 +63,8 @@ class _HangmanState extends State<Hangman> {
 
             if(mistakes >= maxMistakes) {
               guessedWord = secretWord;
+              gameEnded = true;
+              lost = true;
             }
         }
       });
@@ -64,6 +74,9 @@ class _HangmanState extends State<Hangman> {
   }
 
   void pickRandomWord() {
+    lost = false;
+    gameEnded = false;
+
     int index = Random().nextInt(nouns.length);
     secretWord = nouns[index];
     guessedWord = "";
@@ -87,6 +100,7 @@ class _HangmanState extends State<Hangman> {
       body: Column(
         children: [
           TextField(
+            enabled: !gameEnded,
             controller: submitField,
             onSubmitted: submitChar,
             onEditingComplete: () {},
@@ -134,7 +148,10 @@ class _HangmanState extends State<Hangman> {
                 child: Text("Continue"),
               ),
               SizedBox(width: 32),
-              Icon(Icons.error),
+              Icon(
+                Icons.error,
+                color: gameEnded ? (lost ? Colors.red : Colors.green) : Colors.black,
+              ),
               SizedBox(width: 4),
               Text(
                 "${mistakes} / ${maxMistakes}",
