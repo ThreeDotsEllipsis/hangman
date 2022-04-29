@@ -2,7 +2,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:english_words/english_words.dart';
-import 'package:sizer/sizer.dart';
 
 void main() {
   runApp(MaterialApp(
