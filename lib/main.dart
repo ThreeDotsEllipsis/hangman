@@ -5,9 +5,8 @@ import 'package:english_words/english_words.dart';
 
 void main() {
   runApp(MaterialApp(
-      home: Hangman(),
-    )
-  );
+    home: Hangman(),
+  ));
 }
 
 class Hangman extends StatefulWidget {
@@ -38,33 +37,34 @@ class _HangmanState extends State<Hangman> {
   void submitChar(String char) {
     try {
       setState(() {
-        if(char == "") {
+        if (char == "") {
           return;
         }
 
         submitField.clear();
 
-        if(secretWord.contains(char)) {
-          for(int i = 0; i < secretWord.length; i++) {
-            if(secretWord[i] == char) {
-              guessedWord = guessedWord.substring(0, i) + char + guessedWord.substring(i+1);
+        if (secretWord.contains(char)) {
+          for (int i = 0; i < secretWord.length; i++) {
+            if (secretWord[i] == char) {
+              guessedWord = guessedWord.substring(0, i) +
+                  char +
+                  guessedWord.substring(i + 1);
             }
           }
 
-          if(secretWord == guessedWord) {
+          if (secretWord == guessedWord) {
             gameEnded = true;
             lost = false;
           }
-        }
-        else if(!missedChars.contains(char)) {
-            mistakes += 1;
-            missedChars.add(char);
+        } else if (!missedChars.contains(char)) {
+          mistakes += 1;
+          missedChars.add(char);
 
-            if(mistakes >= maxMistakes) {
-              guessedWord = secretWord;
-              gameEnded = true;
-              lost = true;
-            }
+          if (mistakes >= maxMistakes) {
+            guessedWord = secretWord;
+            gameEnded = true;
+            lost = true;
+          }
         }
       });
     }
@@ -112,44 +112,49 @@ class _HangmanState extends State<Hangman> {
           SizedBox(height: 16),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: guessedWord.split('').map((char) => Container(
-              padding: EdgeInsets.all(12),
-              child: Text(
-                char,
-                style: TextStyle(
-                  fontSize: 20,
-                ),
-              ),
-              decoration: BoxDecoration(
-                border: Border.all()
-              ),
-            )).toList(),
+            children: guessedWord
+                .split('')
+                .map((char) => Container(
+                      padding: EdgeInsets.all(12),
+                      child: Text(
+                        char,
+                        style: TextStyle(
+                          fontSize: 20,
+                        ),
+                      ),
+                      decoration: BoxDecoration(border: Border.all()),
+                    ))
+                .toList(),
           ),
           SizedBox(height: 16),
           Wrap(
-            children: missedChars.map((char) => Container(
-              padding: EdgeInsets.all(8),
-              child: Text(
-                char,
-                style: TextStyle(
-                  fontSize: 22,
-                  decoration: TextDecoration.lineThrough,
-                ),
-              ),
-            )).toList(),
+            children: missedChars
+                .map((char) => Container(
+                      padding: EdgeInsets.all(8),
+                      child: Text(
+                        char,
+                        style: TextStyle(
+                          fontSize: 22,
+                          decoration: TextDecoration.lineThrough,
+                        ),
+                      ),
+                    ))
+                .toList(),
           ),
           SizedBox(height: 16),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ElevatedButton(
-                onPressed: playAgain, 
-                child: Text("Continue"),
+                onPressed: playAgain,
+                child: Text("Continu"),
               ),
               SizedBox(width: 32),
               Icon(
                 Icons.error,
-                color: gameEnded ? (lost ? Colors.red : Colors.green) : Colors.black,
+                color: gameEnded
+                    ? (lost ? Colors.red : Colors.green)
+                    : Colors.black,
               ),
               SizedBox(width: 4),
               Text(
